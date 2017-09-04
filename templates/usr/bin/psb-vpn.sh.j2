@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo openconnect \
+        --certificate '{{ secondKey }}' \
+        --cafile=/var/cert/psb/CA.pem \
+        --pid-file=/var/run/psb-vpn.pid \
+        asa-vpn-smir.psbank.ru

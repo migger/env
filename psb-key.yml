@@ -1,0 +1,45 @@
+- name: Install psb-vpn 
+  hosts: localhost
+  become: yes
+  tasks:
+  - set_fact: username=MikhaylyukIE
+
+  - apt: name=openssl state=latest
+  - apt: name=opensc state=latest
+  - apt: name=opensc-pkcs11 state=latest
+  - apt: name=gnutls-bin state=latest
+  - apt: name=openconnect state=latest
+  - file: path=/etc/pkcs11/modules state=directory
+  - template: owner=root group=root src=templates/etc/pkcs11/modules/eToken.module.j2 dest=/etc/pkcs11/modules/eToken.module
+  - file: path=/var/cert/psb state=directory
+
+  - name: get Igor's key 
+    shell: p11tool --list-all 2> /dev/null | grep {{ username }}
+    register: CA_KEY_1
+    args:
+      creates: /var/cert/psb/CA.pem
+
+  - name: extract Igor's key 2  
+    shell: p11tool --list-all --only-urls {{ CA_KEY_1.stdout_lines[0] }}
+    register: CA_KEY_2
+    args: 
+      creates: /var/cert/psb/CA.pem
+  
+  - set_fact:  
+      doIt: "{{ CA_KEY_2.stdout_lines|length == 2 }}"
+
+  - set_fact: firstKey={{ CA_KEY_2.stdout_lines[0] }} 
+    when: doIt
+  - set_fact: secondKey={{ CA_KEY_2.stdout_lines[1] }} \
+    when: doIt
+
+  - name: extract Igor's certificate 2  
+    shell: p11tool --export '{{ firstKey }}' > /var/cert/psb/CA.pem
+    register: CA_KEY_2
+    when: doIt
+    args: 
+      creates: /var/cert/psb/CA.pem
+   
+  - template: src=templates/usr/bin/psb-vpn.sh.j2 dest=/usr/bin/psb-vpn.sh owner=root group=root mode=755 
+    when: doIt
+
