@@ -1,0 +1,9 @@
+- name: Install desktop
+  hosts: localhost
+  become: yes
+  tasks:
+  - apt: name=ttf-inconsolata state=latest
+  - apt: name=ttf-dejavu-core state=latest
+  - apt: name=ttf-dejavu-extra state=latest
+  - apt: name=ttf-liberation state=latest
+

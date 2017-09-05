@@ -1,3 +1,4 @@
 ---
 - include: psb-key.yml
 - include: rdesktop.yml
+- include: fonts.yml
