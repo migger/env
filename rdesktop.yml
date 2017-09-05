@@ -1,0 +1,7 @@
+- name: Install desktop
+  hosts: localhost
+  become: yes
+  tasks:
+  - apt: name=rdesktop state=latest
+  - template: src=templates/usr/bin/psb-rdp.sh.j2 dest=/usr/bin/psb-rdp.sh mode=755 owner=root group=root
+
