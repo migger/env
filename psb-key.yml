@@ -43,3 +43,6 @@
   - template: src=templates/usr/bin/psb-vpn.sh.j2 dest=/usr/bin/psb-vpn.sh owner=root group=root mode=755 
     when: doIt
 
+  - template: src=templates/usr/bin/psb-change-pin.sh.j2 dest=/usr/bin/psb-change-pin.sh owner=root group=root mode=755 
+    when: doIt
+
