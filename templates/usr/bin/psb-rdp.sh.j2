@@ -1,4 +1,7 @@
 #!/bin/bash
-
-rdesktop -u mikhaylyukie -d HEADOFFICE -p - -a 16 -k en-us -f 10.218.117.220
+COLOR=$1
+if [ "$COLOR" = "" ]; then
+  COLOR=16
+fi
+rdesktop -u mikhaylyukie -d HEADOFFICE -p - -a $COLOR -k en-us -f 10.218.117.220
 

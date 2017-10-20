@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo -ne "\033]0;PSB-VPN\007"
 sudo openconnect \
         --certificate '{{ secondKey }}' \
         --cafile=/var/cert/psb/CA.pem \
